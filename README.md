@@ -138,12 +138,23 @@ npm install
     ```
 
 ### 4. Cấu hình biến môi trường
-Tạo file `.env` ở thư mục gốc (nếu cần):
+
+Tạo file `.env` ở thư mục gốc và cấu hình các biến sau để kết nối tới MongoDB và Redis.
+
+**Ví dụ file `.env**:**
 ```env
-MONGO_URI=mongodb://localhost:27017/job-scheduler
+# Cấu hình MongoDB
+MONGO_HOST=localhost
+MONGO_PORT=27017
+MONGO_DB=job-scheduler
+MONGO_USER=
+MONGO_PASS=
+
+# Cấu hình Redis
 REDIS_HOST=localhost
 REDIS_PORT=6379
 ```
+**Lưu ý:** Bỏ trống `MONGO_USER` và `MONGO_PASS` nếu MongoDB của bạn không yêu cầu xác thực.
 
 ---
 
