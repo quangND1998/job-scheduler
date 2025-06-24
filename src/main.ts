@@ -10,12 +10,12 @@ async function bootstrap() {
 
   // Lấy queue từ DI
   const jobQueue = app.get(getQueueToken('job-queue'));
-
+ const emailQueue = app.get(getQueueToken('email-queue'));
   // Tạo bull-board
   const serverAdapter = new ExpressAdapter();
   serverAdapter.setBasePath('/admin/queues');
   createBullBoard({
-    queues: [new BullAdapter(jobQueue)],
+    queues: [new BullAdapter(jobQueue),new BullAdapter(emailQueue)],
     serverAdapter,
   });
   app.use('/admin/queues', serverAdapter.getRouter());

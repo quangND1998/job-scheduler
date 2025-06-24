@@ -47,11 +47,10 @@ export class JobService {
               method: job.d_invocation_method,
               // Có thể truyền thêm các param khác nếu cần
             }, {
-              removeOnFail: false,
               attempts: 2,
-              backoff: 10000,        // chờ 10 giây mỗi lần retry
-              timeout: 120000,
-              // removeOnComplete: true
+              removeOnFail: false, timeout: 60000,
+              backoff: { type: 'fixed', delay: 10000 },
+              removeOnComplete: true
             });
             const end = Date.now();
             const duration = end - start;

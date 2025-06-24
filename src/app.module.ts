@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { MongooseModule } from '@nestjs/mongoose';
-import { BullModule } from '@nestjs/bull';
+import { BullModule  } from '@nestjs/bullmq';
 import { JobModule } from './job/job.module';
 import { AppConfig } from './config/app.config';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
@@ -31,7 +31,7 @@ import { AppConfigModule } from './config/app-config.module';
       imports: [AppConfigModule],
       inject: [AppConfig],
       useFactory: async (config: AppConfig) => ({
-        redis: {
+        connection: {
           host: config.getRedisHost(),
           port: config.getRedisPort(),
         },

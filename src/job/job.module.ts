@@ -8,7 +8,7 @@ import { JobController } from './job.controller';
 
 @Module({
   imports: [
-    BullModule.registerQueue({ name: 'job-queue' }),
+    BullModule.registerQueue({ name: 'job-queue' },  { name: 'email-queue' }),
     MongooseModule.forFeature([{ name: Job.name, schema: JobSchema }]),
   ],
   providers: [JobService, JobProcessor],
