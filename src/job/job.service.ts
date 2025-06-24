@@ -1,7 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bullmq';
+import { InjectQueue } from '@nestjs/bullmq';
 import { Cron } from '@nestjs/schedule';
-import { Queue } from 'bull';
+
 import { InjectModel } from '@nestjs/mongoose';
 import { Job } from './job.schema';
 import { Model } from 'mongoose';
@@ -48,7 +49,7 @@ export class JobService {
               // Có thể truyền thêm các param khác nếu cần
             }, {
               attempts: 2,
-              removeOnFail: false, timeout: 60000,
+              removeOnFail: false,
               backoff: { type: 'fixed', delay: 10000 },
               removeOnComplete: true
             });
