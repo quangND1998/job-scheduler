@@ -82,4 +82,14 @@ export class JobService {
       this.isRunning = false;
     }
   }
+
+  async pause(enabled: Boolean) {
+    console.log(enabled)
+    if (!enabled) {
+     await this.jobQueue.resume();
+    } else {
+
+     await this.jobQueue.pause();
+    }
+  }
 }

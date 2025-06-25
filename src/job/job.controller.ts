@@ -18,4 +18,9 @@ export class JobController {
     this.jobService.setSchedulerEnabled(isEnabled);
     return { enabled: isEnabled };
   }
+   
+  @Get('pause')
+  getStatus(@Query('pause') enabled: Boolean) {
+    return this.jobService.pause(enabled);
+  }
 } 

@@ -3,7 +3,7 @@ import { Job } from 'bullmq';
 import axios from 'axios';
 import { Logger } from '@nestjs/common';
 
-@Processor('job-queue', { concurrency: 20 })
+@Processor('job-queue', { concurrency: 30 })
 export class JobProcessor extends WorkerHost {
   private readonly logger = new Logger(JobProcessor.name);
 
