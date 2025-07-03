@@ -2,34 +2,39 @@ import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bullmq';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JobService } from './job.service';
-import { JobProcessor } from './job.processor/job.processor';
 import { Job, JobSchema } from './job.schema';
 import { JobController } from './job.controller';
-import { join, resolve } from 'path';
-import path from 'path';
 import { pathToFileURL } from 'url';
-import { existsSync } from 'fs';
-const jsPath = resolve(__dirname, 'job.processor', 'job-queue.processor.js');
-const processorPath = pathToFileURL(jsPath).href;
+import queueConfig from 'queue.config';
 
-console.log('🧭 __dirname:', __dirname);
-console.log('📎 Full path:', jsPath);
-console.log('🔗 File URL:', processorPath);
-console.log('✅ File exists:', existsSync(jsPath));
+
+const jobQueueConfig = queueConfig.jobQueue;
+const emailQueueConfig = queueConfig.emailQueue;
+
 @Module({
   imports: [
     BullModule.registerQueue({
-      name: 'job-queue',
+      name: jobQueueConfig.name,
       processors: [
         {
-          concurrency: 30, // Các bạn có thể cấu hình processor chạy đồng thời
-          path: pathToFileURL(__dirname + '/job.processor/job-queue.processor.js')
+          concurrency: jobQueueConfig.concurrency, // Các bạn có thể cấu hình processor chạy đồng thời
+          path: pathToFileURL(__dirname + jobQueueConfig.path),
+          ...((jobQueueConfig as any).limiter ? { limiter: (jobQueueConfig as any).limiter } : {}),
         }
       ],
-    },  { name: 'email-queue' }),
+    }, {
+      name: emailQueueConfig.name,
+      processors: [
+        {
+          concurrency: emailQueueConfig.concurrency, // Các bạn có thể cấu hình processor chạy đồng thời
+          path: pathToFileURL(__dirname + emailQueueConfig.path),
+          ...((emailQueueConfig as any).limiter ? { limiter: (emailQueueConfig as any).limiter } : {}),
+        }
+      ],
+    }),
     MongooseModule.forFeature([{ name: Job.name, schema: JobSchema }]),
   ],
   providers: [JobService],
   controllers: [JobController],
 })
-export class JobModule {}
+export class JobModule { }

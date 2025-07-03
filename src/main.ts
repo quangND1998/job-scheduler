@@ -4,7 +4,12 @@ import { createBullBoard } from '@bull-board/api';
 import { BullMQAdapter } from '@bull-board/api/bullMQAdapter'; 
 import { ExpressAdapter } from '@bull-board/express';
 import { getQueueToken } from '@nestjs/bullmq';
-
+import { EventEmitter } from 'events';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
+EventEmitter.defaultMaxListeners = 10;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
